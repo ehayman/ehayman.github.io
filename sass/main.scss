@@ -1,0 +1,27 @@
+@import
+
+// ------------- UTILITIES ------------- //
+"Utilities/_vars.scss",
+"Utilities/_mixins.scss",
+
+// ------------- BASE ------------- //
+
+/* Reset */
+"Base/Reset/_reset.scss", //Standard HTML5 browser reset
+
+/* Animations */
+"Base/Animations/_keyframes.scss",  //Keyframe animations
+
+/* Typography */
+"Base/Typography/_responsive-typography.scss", //Responsive font sizing and line height map settings
+"Base/Typography/_global-typography.scss", //Global typography styles for HTML tags
+
+/* Global Styles */
+"Base/Global/_screen.scss", //General global miscallenous styles
+
+
+// ------------- COMPONENTS ------------- //
+
+"Components/_results-component.scss",
+"Components/_search-component.scss";
+

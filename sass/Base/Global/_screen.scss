@@ -1,0 +1,20 @@
+// ------------- HTML CLASSES - PAGE TRANSITIONS ------------- //
+
+html {
+    background: linear-gradient(45deg, #eddf85 0%, #f18f88 60%, #f18f88 100%);
+    height: 100%;
+}
+
+
+// ------------- MISC ------------- //
+
+%global-dropshadow {
+    box-shadow: rgba(69, 69, 69, .07) 0 2px 2px;
+}
+
+
+// ------------- VISIBILITY - SHOW/HIDE ------------- //
+
+.ng-cloak {
+    visibility: hidden !important;
+}

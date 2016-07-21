@@ -1,0 +1,31 @@
+// ------------- FONT SIZING MAPS & SILENT CLASSES ------------- //
+
+$ss-small-font-sizes: ( 
+    null : (.8rem, 1.4)
+);
+
+$s-small-font-sizes: ( 
+    null : (.8rem, 1.3)
+);
+
+$s-standard-font-sizes: ( 
+    null : (.9rem, 1.3)
+);
+
+
+%ss-small {
+    @include font-size($ss-small-font-sizes);
+}
+
+%s-small-i {
+    @include font-size($s-small-font-sizes);
+    font-family: $serif-font;
+    font-style: italic;
+    letter-spacing: .02rem;
+}
+
+%s-standard-i {
+    @include font-size($s-standard-font-sizes);
+    font-family: $serif-font;
+    font-style: italic;
+}
