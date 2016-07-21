@@ -14,7 +14,7 @@ System.config({
   baseUrl: "/",
 
   map: {
-    "algoliasearch": "./algoliasearch.min.js", 
+    "algoliasearch": "./algoliasearch.min.js",
     "angular": "github:angular/bower-angular@1.5.7",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
