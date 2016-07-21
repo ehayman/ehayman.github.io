@@ -17,42 +17,50 @@ class SearchStore {
         
         this.query = "";
         this._results = [];
-        this._currentHits = 0;
-        this._currentPage = 0;
+        this._itemNames = [];
+    }
+    
+    get itemNames() {
+        return this._itemNames;
     }
     
     get results() {
         return this._results;
     }
-    
-    get needsAdditionalResults() {
-        return this._currentHits > 0 && this._results.length < 10 && this.query.length < 2 && this._currentPage < 10;
-    }
 
     get createResults() {
         return _.flow([
             this._createRelevantResults,
+            this._removeEmpties,
             this._removeDuplicates,
-            this._setResults,
-            this._handlePagination
+            this._setResults
+        ]);
+    }
+    
+    get createNames() {
+        return _.flow([
+            this._createRelevantResults,
+            this._removeEmpties,
+            this._removeDuplicates,
+            this._setItemNames
         ]);
     }
     
     triggerQuerySearch() {
         this._results = [];
-        this._currentPage = 0;
+        this._itemNames = [];
         this._updateQuery();
     }
     
-     _updateQuery() {
+     _updateQuery(valueType) {
         this._index.search(this.query, {
-            page: this._currentPage
-        }).then(results => this._handleFetchSuccess(results)).catch(err => this._handleFetchError(err));
+            hitsPerPage: 40
+        }).then((results) => this._handleFetchSuccess(results)).catch(err => this._handleFetchError(err));
     }
     
-    _handleFetchSuccess(results) {
-        this._currentHits = results.nbHits;
-        this.createResults(results);
+    _handleFetchSuccess(results, valueType) {
+        this.createResults(results, this._getResultsValues);
+        this.createNames(results, this._getNamesValues);
     }
 
     _handleFetchError(err) {
@@ -63,8 +71,8 @@ class SearchStore {
     ** createRelevantResults :: array -> array
     ** Returns array of results containing relevant (either brand or type) value and highest level category
     */   
-    _createRelevantResults(results) {
-        return results.hits.map(item => Object.assign({}, {relevantValue: this._getResultsValues(item._highlightResult)}, {category: item.hierarchicalCategories.lvl0}));
+    _createRelevantResults(results, getValues) {
+        return results.hits.map(item => Object.assign({}, {relevantValue: getValues(item._highlightResult)}, {category: item.hierarchicalCategories.lvl0}));
     }
     
     /**
@@ -76,31 +84,38 @@ class SearchStore {
     }
     
     /**
+    ** getNamesValues :: object -> string
+    ** Returns relevant name value based on matched words
+    */      
+    _getNamesValues(item) {
+        return item.name.matchedWords.length > 0 ? item.name.value : "";
+    }
+    
+    /**
+    ** removeEmpties :: array -> array
+    ** Returns array of results with empty values filtered out
+    */   
+    _removeEmpties(relevantResults) {
+        return relevantResults.filter(item => item.relevantValue != "");
+    } 
+    
+    /**
     ** removeDuplicates :: array -> array
     ** Returns array of results with duplicates filtered out
     */   
     _removeDuplicates(relevantResults) {
         return _.uniqWith(relevantResults, _.isEqual);
     }
-    
-    /**
-    ** setResults :: array -> array
-    ** Returns array of results concatenated to any prior results from the current query
-    */   
+  
      _setResults(relevantResults) {
-        return this._results.concat(relevantResults);
+        this._results = relevantResults;
+        this._$rootScope.$evalAsync();
     }   
     
-    _handlePagination(relevantResults) {
-        this._results = this._removeDuplicates(relevantResults);
-        if (this.needsAdditionalResults) {
-            this._currentPage++;
-            this._updateQuery();
-        }
-        else {
-            this._$rootScope.$evalAsync();
-        }
-    }
+     _setItemNames(relevantNames) {
+        this._itemNames = relevantNames;
+        this._$rootScope.$evalAsync();
+    }  
     
 }
 export default SearchStore;

@@ -17,6 +17,13 @@
             width: calc(100% - #{$column-gutter * 2});
         }
     }
+&-wrapper {
+    &:first-child:not(:only-child) {
+        border-bottom: 2px solid $extra-light-grey;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+}
     &-item {
         @extend %ss-small;
         padding: 10px 20px;

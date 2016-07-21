@@ -23,6 +23,10 @@ class SearchController {
         return this._searchStore.results;
     }
     
+    get itemNames() {
+        return this._searchStore.itemNames;
+    }
+    
     get query() {
         return this._searchStore.query;
     }
