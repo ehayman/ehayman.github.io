@@ -8,8 +8,8 @@ export default angular
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.debugInfoEnabled(false);
     }])
-    .constant('APP_ID', 'QEZLJEBUWB')
-    .constant('API_KEY', '336f0638ed3e45b8ac22b4a0df3417f4')
+    .constant('APP_ID', 'Q71HM8430Y')
+    .constant('API_KEY', '7f42b7cbd41474bf777414c24302d4a4')
     .service('searchStore', SearchStore)
     .controller('SearchController', SearchController)
     .directive('searchDirective', searchDirective);
